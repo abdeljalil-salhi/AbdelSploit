@@ -51,6 +51,10 @@ class AbdelSploit:
             cls()
             TargetDNS()
             self.menu()
+        elif x == "15":
+            cls()
+            PhoneNumber()
+            self.menu()
         elif x == "2":
             self.menu_vanalysis()
         elif x == "99":
@@ -63,7 +67,8 @@ class AbdelSploit:
         banner()
         printf("[*] INFORMATION GATHERING:\n", BLUE)
         printf("[1] My IP\t\t[2] Target IP\n")
-        printf("[3] My DNS\t\t[4] Target DNS\n\n")
+        printf("[3] My DNS\t\t[4] Target DNS\n")
+        printf("[5] Phone Number\n\n")
         printf("[99] BACK\n\n", BLUE)
         printf("$~> ")
         x = str(input("")).lower()
@@ -76,6 +81,8 @@ class AbdelSploit:
             MyDNS()
         elif x == "4":
             TargetDNS()
+        elif x == "5":
+            PhoneNumber()
         elif x == "99":
             self.menu()
         else:

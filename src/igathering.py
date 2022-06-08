@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from src.art import *
+from src.api import *
 from src.print import *
 from src.utilities import *
 
@@ -71,6 +72,7 @@ class MyIP:
         printf("Save it?\t[Y]es / [N]o\n")
         printf("$~> ")
         x = str(input("")).lower()
+
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
@@ -117,8 +119,10 @@ class TargetIP:
         self.main()
 
     def main(self):
+        printf("[2] TARGET IP\n", BLUE)
         printf("IP\~> ")
         self.target = input("")
+
         sep()
         self.time = datetime.now()
         try:
@@ -144,7 +148,6 @@ class TargetIP:
 
             self.time = str(datetime.now() - self.time)
 
-            printf("[2] TARGET IP\n", BLUE)
             printf(f"IP\t\t: {ip}\n")
             printf(f"Country\t\t: [{countryCode}] {country}\n")
             printf(f"Region\t\t: [{region}] {regionName}\n")
@@ -177,7 +180,7 @@ class TargetIP:
             printf("Save it?\t[Y]es / [N]o\n")
             printf("$~> ")
             x = str(input("")).lower()
-            
+
             sep()
             if x == "y" or x == "ye" or x == "yes" or x == "oui":
                 folder = "./output/igathering/"
@@ -264,6 +267,7 @@ class MyDNS:
         printf("Save it?\t[Y]es / [N]o\n")
         printf("$~> ")
         x = str(input("")).lower()
+
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
@@ -291,8 +295,10 @@ class TargetDNS:
         self.main()
 
     def main(self):
+        printf("[4] TARGET DNS\n", BLUE)
         printf("DNS\~> ")
         self.target = input("")
+
         sep()
         self.time = datetime.now()
         try:
@@ -311,7 +317,6 @@ class TargetDNS:
 
             self.time = str(datetime.now() - self.time)
 
-            printf("[4] TARGET DNS\n", BLUE)
             printf(f"DNS IP\t\t: {ip}\n")
             printf(f"DNS GEO\t\t: [{countryCode}] {country}\n")
             printf(f"DNS POS\t\t: [{region}] {regionName} / {city}\n")
@@ -325,6 +330,7 @@ class TargetDNS:
             printf("Save it?\t[Y]es / [N]o\n")
             printf("$~> ")
             x = str(input("")).lower()
+
             sep()
             if x == "y" or x == "ye" or x == "yes" or x == "oui":
                 folder = "./output/igathering/"
@@ -346,4 +352,196 @@ class TargetDNS:
             printf("[4] TARGET DNS\n", BLUE)
             printf("INVALID TARGET.", RED)
             sep()
+        pause()
+
+
+class PhoneNumber:
+    def __init__(self):
+        self.time = None
+        banner()
+        self.main()
+
+    def main(self):
+        printf("[5] PHONE NUMBER\n", BLUE)
+        printf("[format: +(countryCode)(number)] [option --deep]\n")
+        printf("PHONE\~> ")
+        self.target = input("")
+        self.targetsplit = self.target.split()
+
+        sep()
+        printf(f"Fetching infos for {self.targetsplit[0]}\n")
+
+        sep()
+        self.time = datetime.now()
+
+        from phonenumbers import carrier, geocoder, timezone, PhoneNumberFormat, is_possible_number, parse, format_number, region_code_for_country_code
+
+        try:
+            if self.targetsplit[1]:
+                if self.targetsplit[1] == "--deep" or self.targetsplit[1] == "-deep" or self.targetsplit[1] == "-d" or self.targetsplit[1] == "--d":
+                    phoneNumber = parse(str(self.targetsplit[0]), None)
+                    numberCC = format_number(
+                        phoneNumber, PhoneNumberFormat.INTERNATIONAL).split(" ")[0]
+                    numberLOCAL = format_number(
+                        phoneNumber, PhoneNumberFormat.E164).replace(numberCC, "")
+                    numberINTER = format_number(
+                        phoneNumber, PhoneNumberFormat.INTERNATIONAL)
+                    country = geocoder.country_name_for_number(
+                        phoneNumber, "en")
+                    location = geocoder.description_for_number(
+                        phoneNumber, "en")
+                    carrierName = carrier.name_for_number(phoneNumber, "en")
+
+                    self.res = get(
+                        f"http://apilayer.net/api/validate?access_key={APIKey}&number={self.targetsplit[0]}")
+                    self.data = self.res.json()
+
+                    status = self.data["valid"]
+                    localFormat = self.data["local_format"]
+                    internationalFormat = self.data["international_format"]
+                    countryPrefix = self.data["country_prefix"]
+                    countryCode = self.data["country_code"]
+                    countryName = self.data["country_name"]
+                    location_ = self.data["location"]
+                    carrier_ = self.data["carrier"]
+                    lineType = self.data["line_type"]
+
+                    self.time = str(datetime.now() - self.time)
+
+                    printf(f"International format\t: {numberINTER}\n")
+                    printf(f"Local format\t\t: {numberLOCAL}\n")
+                    printf(f"Country\t\t\t: {country} ({numberCC})\n")
+                    printf(f"City/Area\t\t: {location} / {location_}\n")
+                    printf(f"Carrirer\t\t: {carrierName}\n")
+                    for timezoneResult in timezone.time_zones_for_number(phoneNumber):
+                        printf(f"Timezone\t\t: {timezoneResult}\n")
+                    if is_possible_number(phoneNumber):
+                        printf("Status\t\t\t: VALID AND POSSIBLE\n")
+                    else:
+                        printf("Status\t\t\t: VALID AND NOT POSSIBLE\n")
+
+                    sep()
+                    printf(f"INTER\t\t\t: {internationalFormat}\n")
+                    printf(f"LCOAL\t\t\t: {localFormat}\n")
+                    printf(f"PREFIX\t\t\t: {countryPrefix}\n")
+                    printf(f"COUNTRY\t\t\t: [{countryCode}] {countryName}\n")
+                    if location != "":
+                        printf(f"LOCATION\t\t\t: {location}\n")
+                    printf(f"CARRIER\t\t\t: {carrier_}\n")
+                    printf(f"LINE TYPE\t\t: {lineType}\n")
+                    if status == True:
+                        printf("=> VALID!\n")
+
+                    sep()
+                    printf(f"[+] Scanning completed in {self.time}...\n", BLUE)
+
+                    sep()
+                    printf("Save it?\t[Y]es / [N]o\n")
+                    printf("$~> ")
+                    x = str(input("")).lower()
+
+                    sep()
+                    if x == "y" or x == "ye" or x == "yes" or x == "oui":
+                        folder = "./output/igathering/"
+                        filename = f"phonenumber_{self.targetsplit[0]}.txt"
+                        filepath = path.join(folder, filename)
+                        if not path.isdir(folder):
+                            makedirs(folder)
+                        f = open(filepath, "w+")
+                        f.write(
+                            f"[*] RESULTS FOR NUMBER {self.targetsplit[0]}\n")
+                        f.write(f"International format : {numberINTER}\n")
+                        f.write(f"Local format         : {numberLOCAL}\n")
+                        f.write(
+                            f"Country              : {country} ({numberCC})\n")
+                        f.write(
+                            f"City/Area            : {location} / {location_}\n")
+                        f.write(f"Carrirer             : {carrierName}\n")
+                        for timezoneResult in timezone.time_zones_for_number(phoneNumber):
+                            f.write(
+                                f"Timezone             : {timezoneResult}\n")
+                        if is_possible_number(phoneNumber):
+                            f.write(
+                                "Status               : VALID AND POSSIBLE\n\n")
+                        else:
+                            f.write(
+                                "Status               : VALID AND NOT POSSIBLE\n\n")
+                        f.write(
+                            f"INTER                : {internationalFormat}\n")
+                        f.write(f"LCOAL                : {localFormat}\n")
+                        f.write(f"PREFIX               : {countryPrefix}\n")
+                        f.write(
+                            f"COUNTRY              : [{countryCode}] {countryName}\n")
+                        if location != "":
+                            f.write(f"LOCATION             : {location}\n")
+                        f.write(f"CARRIER              : {carrier_}\n")
+                        f.write(f"LINE TYPE            : {lineType}\n")
+                        if status == True:
+                            f.write("=> VALID!\n")
+                        f.close()
+                        printf(f"[+] Saved to: {filepath}\n", BLUE)
+                    sep()
+        except:
+            phoneNumber = parse(self.targetsplit[0], None)
+            numberCC = format_number(
+                phoneNumber, PhoneNumberFormat.INTERNATIONAL).split(" ")[0]
+            numberLOCAL = format_number(
+                phoneNumber, PhoneNumberFormat.E164).replace(numberCC, "")
+            numberINTER = format_number(
+                phoneNumber, PhoneNumberFormat.INTERNATIONAL)
+            country = geocoder.country_name_for_number(phoneNumber, "en")
+            location = geocoder.description_for_number(phoneNumber, "en")
+            carrierName = carrier.name_for_number(phoneNumber, "en")
+
+            self.time = str(datetime.now() - self.time)
+
+            printf(f"International format\t: {numberINTER}\n")
+            printf(f"Local format\t\t: {numberLOCAL}\n")
+            printf(f"Country\t\t\t: {country} ({numberCC})\n")
+            printf(f"City/Area\t\t: {location}\n")
+            printf(f"Carrirer\t\t: {carrierName}\n")
+            for timezoneResult in timezone.time_zones_for_number(phoneNumber):
+                printf(f"Timezone\t\t: {timezoneResult}\n")
+            if is_possible_number(phoneNumber):
+                printf("Status\t\t\t: VALID AND POSSIBLE\n")
+            else:
+                printf("Status\t\t\t: VALID AND NOT POSSIBLE\n")
+
+            sep()
+            printf(f"[+] Scanning completed in {self.time}...\n", BLUE)
+
+            sep()
+            printf("Save it?\t[Y]es / [N]o\n")
+            printf("$~> ")
+            x = str(input("")).lower()
+
+            sep()
+            if x == "y" or x == "ye" or x == "yes" or x == "oui":
+                folder = "./output/igathering/"
+                filename = f"phonenumber_{self.targetsplit[0]}.txt"
+                filepath = path.join(folder, filename)
+                if not path.isdir(folder):
+                    makedirs(folder)
+                f = open(filepath, "w+")
+                f.write(
+                    f"[*] RESULTS FOR NUMBER {self.targetsplit[0]}\n")
+                f.write(f"International format : {numberINTER}\n")
+                f.write(f"Local format         : {numberLOCAL}\n")
+                f.write(
+                    f"Country              : {country} ({numberCC})\n")
+                f.write(
+                    f"City/Area            : {location}\n")
+                f.write(f"Carrirer             : {carrierName}\n")
+                for timezoneResult in timezone.time_zones_for_number(phoneNumber):
+                    f.write(
+                        f"Timezone             : {timezoneResult}\n")
+                if is_possible_number(phoneNumber):
+                    f.write(
+                        "Status               : VALID AND POSSIBLE\n")
+                else:
+                    f.write(
+                        "Status               : VALID AND NOT POSSIBLE\n")
+                f.close()
+                printf(f"[+] Saved to: {filepath}\n", BLUE)
+                sep()
         pause()

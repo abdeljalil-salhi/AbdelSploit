@@ -24,7 +24,8 @@ def sep():
 
 # pause the console
 def pause():
-    input("Done? Press ENTER to continue...")
+    printf("Done? Press ENTER to continue...")
+    input("")
 
 
 # print the banner
