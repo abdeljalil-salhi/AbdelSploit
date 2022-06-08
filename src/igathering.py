@@ -6,7 +6,8 @@ from src.api import *
 from src.print import *
 from src.utilities import *
 
-from os import path, makedirs, startfile
+from os import path, makedirs
+from sys import platform
 from requests import get
 from datetime import datetime
 
@@ -130,7 +131,13 @@ class MyIP:
             gmap.marker(float(lat), float(lon), "cornflowerblue")
             gmap.draw(filepath)
 
-            startfile(path.realpath(filepath))
+            if platform == "win32":
+                from os import startfile
+                startfile(path.realpath(filepath))
+            else:
+                from subprocess import call
+                opener = "open" if platform == "darwin" else "xdg-open"
+                call([opener, path.realpath(filepath)])
 
             printf(f"[+] Saved to: {filepath}\n", BLUE)
             sep()
@@ -263,7 +270,13 @@ class TargetIP:
                 gmap.marker(float(lat), float(lon), "cornflowerblue")
                 gmap.draw(filepath)
 
-                startfile(path.realpath(filepath))
+                if platform == "win32":
+                    from os import startfile
+                    startfile(path.realpath(filepath))
+                else:
+                    from subprocess import call
+                    opener = "open" if platform == "darwin" else "xdg-open"
+                    call([opener, path.realpath(filepath)])
 
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
                 sep()
@@ -358,7 +371,13 @@ class MyDNS:
             gmap.marker(float(lat), float(lon), "cornflowerblue")
             gmap.draw(filepath)
 
-            startfile(path.realpath(filepath))
+            if platform == "win32":
+                from os import startfile
+                startfile(path.realpath(filepath))
+            else:
+                from subprocess import call
+                opener = "open" if platform == "darwin" else "xdg-open"
+                call([opener, path.realpath(filepath)])
 
             printf(f"[+] Saved to: {filepath}\n", BLUE)
             sep()
@@ -447,7 +466,13 @@ class TargetDNS:
                 gmap.marker(float(lat), float(lon), "cornflowerblue")
                 gmap.draw(filepath)
 
-                startfile(path.realpath(filepath))
+                if platform == "win32":
+                    from os import startfile
+                    startfile(path.realpath(filepath))
+                else:
+                    from subprocess import call
+                    opener = "open" if platform == "darwin" else "xdg-open"
+                    call([opener, path.realpath(filepath)])
                 sep()
 
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
