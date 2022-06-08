@@ -479,7 +479,7 @@ class PhoneNumber:
         sep()
         self.time = datetime.now()
 
-        from phonenumbers import carrier, geocoder, timezone, PhoneNumberFormat, is_possible_number, parse, format_number, region_code_for_country_code
+        from phonenumbers import carrier, geocoder, timezone, PhoneNumberFormat, is_possible_number, parse, format_number
 
         try:
             if self.targetsplit[1]:
