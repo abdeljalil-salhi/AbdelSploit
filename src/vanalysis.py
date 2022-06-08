@@ -13,11 +13,39 @@ from datetime import datetime
 class PortMapper:
     def __init__(self):
         self.time = None
+        self.target = None
         self.openports = []
         banner()
         self.main()
 
+    def scanner(self, port):
+        try:
+            s = socket(AF_INET, SOCK_STREAM)
+            s.settimeout(0.5)
+            s.connect((self.target, port))
+            try:
+                service = s.recv(1024).decode()
+                printf(f"[{datetime.now() - self.time}] PORT ")
+                printf(f"{port}", GREEN)
+                printf(f": OPEN ({service})\n")
+                self.openports.append(port)
+            except:
+                printf(f"[{datetime.now() - self.time}] PORT ")
+                printf(f"{port}", GREEN)
+                printf(": OPEN\n")
+                self.openports.append(port)
+        except KeyboardInterrupt:
+            printf("[!] CTRL + C pressed.\n", RED)
+        except gaierror:
+            printf("[!] Invalid Host.\n", RED)
+        except error:
+            printf("[!] Server not responding...\n", RED)
+        except:
+            pass
+
     def main(self):
+        from threading import Thread
+
         printf("[1] PORT MAPPER\n", BLUE)
         printf("Interrupt: ")
         printf("[CTRL + C]\n", BLUE)
@@ -69,22 +97,9 @@ class PortMapper:
         self.time = datetime.now()
 
         sep()
-        try:
-            for port in range(self.start, self.end):
-                s = socket(AF_INET, SOCK_STREAM)
-                setdefaulttimeout(1)
-                self.result = s.connect_ex((self.target, port))
-                if self.result == 0:
-                    printf(
-                        f"[{datetime.now() - self.time}] PORT {port}: OPEN\n", GREEN)
-                    self.openports.append(port)
-                s.close()
-        except KeyboardInterrupt:
-            printf("[!] CTRL + C pressed.\n", RED)
-        except gaierror:
-            printf("[!] Invalid Host.\n", RED)
-        except error:
-            printf("[!] Server not responding...\n", RED)
+        for port in range(self.start, self.end):
+            thread = Thread(target=self.scanner, args=[port])
+            thread.start()
 
         sep()
         self.time = str(datetime.now() - self.time)
@@ -94,7 +109,7 @@ class PortMapper:
         printf(f"{len(self.openports)} open ports found.\n", BLUE)
 
         sep()
-        printf("Open ports/protocols names in browser?\t[Y]es / [N]o\n")
+        printf("Save it?\t[Y]es / [N]o\n")
         printf("$~> ")
         x = str(input("")).lower()
 

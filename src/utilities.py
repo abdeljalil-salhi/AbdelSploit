@@ -4,7 +4,7 @@
 from src.art import *
 from src.print import printf, GREEN, YELLOW
 
-from os import system, name
+from os import system, get_terminal_size, name
 
 
 # clear the console
@@ -19,7 +19,8 @@ def cls():
 
 # print a separator
 def sep():
-    printf("-" * 50 + "\n", GREEN)
+    (w, _) = get_terminal_size()
+    printf("-" * w + "\n", GREEN)
 
 
 # pause the console

@@ -12,6 +12,7 @@ from src.print import *
 from src.utilities import *
 from src.igathering import *
 from src.vanalysis import *
+from src.utools import *
 
 from sys import exit
 
@@ -26,7 +27,7 @@ class AbdelSploit:
         banner()
         printf("[1] Information Gathering\t\t[A] YouTube\n")
         printf("[2] Vulnerability Analysis\n")
-        printf("[3] Utilities\n\n")
+        printf("[3] Utility Tools\n\n")
         printf("[99] Exit AbdelSploit\n\n", BLUE)
         printf("$~> ")
         self.choice = str(input("")).lower()
@@ -57,6 +58,16 @@ class AbdelSploit:
             self.menu()
         elif x == "2":
             self.menu_vanalysis()
+        elif x == "21":
+            cls()
+            PortMapper()
+            self.menu()
+        elif x == "3":
+            self.menu_utools()
+        elif x == "31":
+            cls()
+            PasswordGenerator()
+            self.menu()
         elif x == "99":
             self._quit()
         else:
@@ -113,6 +124,38 @@ class AbdelSploit:
             sep()
             pause()
             self.menu_vanalysis()
+        self.menu()
+
+    def menu_utools(self):
+        cls()
+        banner()
+        printf("[*] UTILITY TOOLS:\n", BLUE)
+        printf("[1] Password Generator\n")
+        printf("[2] XXXXX\n\n")
+        printf("[99] BACK\n\n", BLUE)
+        printf("$~> ")
+        x = str(input("")).lower()
+        cls()
+        if x == "1":
+            PasswordGenerator()
+        elif x == "1a":
+            PasswordGenerator().easy()
+        elif x == "1b":
+            PasswordGenerator().medium()
+        elif x == "1c":
+            PasswordGenerator().hard()
+        elif x == "1x":
+            PasswordGenerator().show()
+        elif x == "1z":
+            PasswordGenerator().delete()
+        elif x == "99":
+            self.menu()
+        else:
+            banner()
+            printf("[!] COMMAND NOT FOUND.\n", RED)
+            sep()
+            pause()
+            self.utools()
         self.menu()
 
     def _quit(self):
