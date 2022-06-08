@@ -6,7 +6,7 @@ from src.api import *
 from src.print import *
 from src.utilities import *
 
-from os import path, makedirs
+from os import path, makedirs, startfile
 from requests import get
 from datetime import datetime
 
@@ -76,10 +76,11 @@ class MyIP:
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
-            filename = "myip.txt"
+            filename = f"myip_{ip}.txt"
             filepath = path.join(folder, filename)
             if not path.isdir(folder):
                 makedirs(folder)
+
             f = open(filepath, "w+")
             f.write("[*] RESULTS FOR MY IP\n")
             f.write(f"IP        : {ip}\n")
@@ -107,6 +108,30 @@ class MyIP:
             elif hosting == False:
                 f.write("Hosting   : FALSE\n")
             f.close()
+
+            printf(f"[+] Saved to: {filepath}\n", BLUE)
+            sep()
+
+        printf("Plot location in Google Maps?\t[Y]es / [N]o\n")
+        printf("$~> ")
+        x = str(input("")).lower()
+
+        sep()
+        if x == "y" or x == "ye" or x == "yes" or x == "oui":
+            from gmplot.gmplot import GoogleMapPlotter
+
+            folder = "./output/igathering/"
+            filename = f"myipmap_{ip}.html"
+            filepath = path.join(folder, filename)
+            if not path.isdir(folder):
+                makedirs(folder)
+
+            gmap = GoogleMapPlotter(float(lat), float(lon), 13)
+            gmap.marker(float(lat), float(lon), "cornflowerblue")
+            gmap.draw(filepath)
+
+            startfile(path.realpath(filepath))
+
             printf(f"[+] Saved to: {filepath}\n", BLUE)
             sep()
         pause()
@@ -188,6 +213,7 @@ class TargetIP:
                 filepath = path.join(folder, filename)
                 if not path.isdir(folder):
                     makedirs(folder)
+
                 f = open(filepath, "w+")
                 f.write(f"[*] RESULTS FOR IP {ip}\n")
                 f.write(f"IP        : {ip}\n")
@@ -215,11 +241,35 @@ class TargetIP:
                 elif hosting == False:
                     f.write("Hosting   : FALSE\n")
                 f.close()
+
+                printf(f"[+] Saved to: {filepath}\n", BLUE)
+                sep()
+
+            printf("Plot location in Google Maps?\t[Y]es / [N]o\n")
+            printf("$~> ")
+            x = str(input("")).lower()
+
+            sep()
+            if x == "y" or x == "ye" or x == "yes" or x == "oui":
+                from gmplot.gmplot import GoogleMapPlotter
+
+                folder = "./output/igathering/"
+                filename = f"ipmap_{ip}.html"
+                filepath = path.join(folder, filename)
+                if not path.isdir(folder):
+                    makedirs(folder)
+
+                gmap = GoogleMapPlotter(float(lat), float(lon), 13)
+                gmap.marker(float(lat), float(lon), "cornflowerblue")
+                gmap.draw(filepath)
+
+                startfile(path.realpath(filepath))
+
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
                 sep()
         except:
             printf("[2] Target IP\n", BLUE)
-            printf("INVALID TARGET.", RED)
+            printf("INVALID TARGET.\n", RED)
             sep()
         pause()
 
@@ -245,6 +295,8 @@ class MyDNS:
         self.res = get(f"http://ip-api.com/json/{ipdns}")
         self.data = self.res.json()
 
+        lat = str(self.data["lat"])
+        lon = str(self.data["lon"])
         region = self.data["region"]
         regionName = self.data["regionName"]
         city = self.data["city"]
@@ -271,10 +323,11 @@ class MyDNS:
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
-            filename = "mydns.txt"
+            filename = f"mydns_{ipdns}.txt"
             filepath = path.join(folder, filename)
             if not path.isdir(folder):
                 makedirs(folder)
+
             f = open(filepath, "w+")
             f.write("[*] RESULTS FOR MY DNS\n")
             f.write(f"DNS IP     : {ipdns}\n")
@@ -283,6 +336,30 @@ class MyDNS:
             f.write(f"DNS ISP    : {isp}\n")
             f.write(f"DNS AS     : {as_}\n")
             f.close()
+
+            printf(f"[+] Saved to: {filepath}\n", BLUE)
+            sep()
+
+        printf("Plot location in Google Maps?\t[Y]es / [N]o\n")
+        printf("$~> ")
+        x = str(input("")).lower()
+
+        sep()
+        if x == "y" or x == "ye" or x == "yes" or x == "oui":
+            from gmplot.gmplot import GoogleMapPlotter
+
+            folder = "./output/igathering/"
+            filename = f"mydnsmap_{ipdns}.html"
+            filepath = path.join(folder, filename)
+            if not path.isdir(folder):
+                makedirs(folder)
+
+            gmap = GoogleMapPlotter(float(lat), float(lon), 13)
+            gmap.marker(float(lat), float(lon), "cornflowerblue")
+            gmap.draw(filepath)
+
+            startfile(path.realpath(filepath))
+
             printf(f"[+] Saved to: {filepath}\n", BLUE)
             sep()
         pause()
@@ -307,6 +384,8 @@ class TargetDNS:
             self.data = self.res.json()
 
             ip = self.data["query"]
+            lat = str(self.data["lat"])
+            lon = str(self.data["lon"])
             countryCode = self.data["countryCode"]
             country = self.data["country"]
             region = self.data["region"]
@@ -338,6 +417,7 @@ class TargetDNS:
                 filepath = path.join(folder, filename)
                 if not path.isdir(folder):
                     makedirs(folder)
+
                 f = open(filepath, "w+")
                 f.write(f"[*] RESULTS FOR DNS {ip}\n")
                 f.write(f"DNS IP     : {ip}\n")
@@ -346,11 +426,36 @@ class TargetDNS:
                 f.write(f"DNS ISP    : {isp}\n")
                 f.write(f"DNS AS     : {as_}\n")
                 f.close()
+
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
                 sep()
+
+            printf("Plot location in Google Maps?\t[Y]es / [N]o\n")
+            printf("$~> ")
+            x = str(input("")).lower()
+
+            if x == "y" or x == "ye" or x == "yes" or x == "oui":
+                from gmplot.gmplot import GoogleMapPlotter
+
+                folder = "./output/igathering/"
+                filename = f"dnsmap_{ip}.html"
+                filepath = path.join(folder, filename)
+                if not path.isdir(folder):
+                    makedirs(folder)
+
+                gmap = GoogleMapPlotter(float(lat), float(lon), 13)
+                gmap.marker(float(lat), float(lon), "cornflowerblue")
+                gmap.draw(filepath)
+
+                startfile(path.realpath(filepath))
+                sep()
+
+                printf(f"[+] Saved to: {filepath}\n", BLUE)
+            sep()
+
         except:
             printf("[4] TARGET DNS\n", BLUE)
-            printf("INVALID TARGET.", RED)
+            printf("INVALID TARGET.\n", RED)
             sep()
         pause()
 
@@ -447,6 +552,7 @@ class PhoneNumber:
                         filepath = path.join(folder, filename)
                         if not path.isdir(folder):
                             makedirs(folder)
+
                         f = open(filepath, "w+")
                         f.write(
                             f"[*] RESULTS FOR NUMBER {self.targetsplit[0]}\n")
@@ -479,8 +585,9 @@ class PhoneNumber:
                         if status == True:
                             f.write("=> VALID!\n")
                         f.close()
+
                         printf(f"[+] Saved to: {filepath}\n", BLUE)
-                    sep()
+                        sep()
         except:
             phoneNumber = parse(self.targetsplit[0], None)
             numberCC = format_number(
@@ -522,6 +629,7 @@ class PhoneNumber:
                 filepath = path.join(folder, filename)
                 if not path.isdir(folder):
                     makedirs(folder)
+
                 f = open(filepath, "w+")
                 f.write(
                     f"[*] RESULTS FOR NUMBER {self.targetsplit[0]}\n")
@@ -542,6 +650,7 @@ class PhoneNumber:
                     f.write(
                         "Status               : VALID AND NOT POSSIBLE\n")
                 f.close()
+
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
                 sep()
         pause()
