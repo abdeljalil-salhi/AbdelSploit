@@ -38,7 +38,7 @@ class MyIP:
 
         self.time = str(datetime.now() - self.time)
 
-        printf("[1] My IP\n", BLUE)
+        printf("[1] MY IP\n", BLUE)
         printf(f"IP\t\t: {ip}\n")
         printf(f"Country\t\t: [{countryCode}] {country}\n")
         printf(f"Region\t\t: [{region}] {regionName}\n")
@@ -117,7 +117,7 @@ class TargetIP:
         self.main()
 
     def main(self):
-        printf("Enter Target IP: ")
+        printf("IP\~> ")
         self.target = input("")
         sep()
         self.time = datetime.now()
@@ -144,7 +144,7 @@ class TargetIP:
 
             self.time = str(datetime.now() - self.time)
 
-            printf("[2] Target IP\n", BLUE)
+            printf("[2] TARGET IP\n", BLUE)
             printf(f"IP\t\t: {ip}\n")
             printf(f"Country\t\t: [{countryCode}] {country}\n")
             printf(f"Region\t\t: [{region}] {regionName}\n")
@@ -177,6 +177,7 @@ class TargetIP:
             printf("Save it?\t[Y]es / [N]o\n")
             printf("$~> ")
             x = str(input("")).lower()
+            
             sep()
             if x == "y" or x == "ye" or x == "yes" or x == "oui":
                 folder = "./output/igathering/"
@@ -212,10 +213,11 @@ class TargetIP:
                     f.write("Hosting   : FALSE\n")
                 f.close()
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
+                sep()
         except:
             printf("[2] Target IP\n", BLUE)
             printf("INVALID TARGET.", RED)
-        sep()
+            sep()
         pause()
 
 
@@ -248,7 +250,7 @@ class MyDNS:
 
         self.time = str(datetime.now() - self.time)
 
-        printf("[3] My DNS\n", BLUE)
+        printf("[3] MY DNS\n", BLUE)
         printf(f"DNS IP\t\t: {ipdns}\n")
         printf(f"DNS GEO\t\t: {geodns}\n")
         printf(f"DNS POS\t\t: [{region}] {regionName} / {city}\n")
@@ -289,7 +291,7 @@ class TargetDNS:
         self.main()
 
     def main(self):
-        printf("Enter Target DNS: ")
+        printf("DNS\~> ")
         self.target = input("")
         sep()
         self.time = datetime.now()
@@ -309,7 +311,7 @@ class TargetDNS:
 
             self.time = str(datetime.now() - self.time)
 
-            printf("[4] Target DNS\n", BLUE)
+            printf("[4] TARGET DNS\n", BLUE)
             printf(f"DNS IP\t\t: {ip}\n")
             printf(f"DNS GEO\t\t: [{countryCode}] {country}\n")
             printf(f"DNS POS\t\t: [{region}] {regionName} / {city}\n")
@@ -339,8 +341,9 @@ class TargetDNS:
                 f.write(f"DNS AS     : {as_}\n")
                 f.close()
                 printf(f"[+] Saved to: {filepath}\n", BLUE)
+                sep()
         except:
-            printf("[4] Target DNS\n", BLUE)
+            printf("[4] TARGET DNS\n", BLUE)
             printf("INVALID TARGET.", RED)
-        sep()
+            sep()
         pause()

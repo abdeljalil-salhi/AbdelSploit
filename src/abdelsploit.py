@@ -11,6 +11,7 @@ from src.art import *
 from src.print import *
 from src.utilities import *
 from src.igathering import *
+from src.vanalysis import *
 
 from sys import exit
 
@@ -23,11 +24,10 @@ class AbdelSploit:
     def menu(self):
         cls()
         banner()
-        printf("Choose an option:\n")
-        printf("\t[1] Information Gathering\t\t[A] YouTube\n")
-        printf("\t[2] Vulnerability Analysis\n")
-        printf("\t[3] Utilities\n\n")
-        printf("\t[99] Exit AbdelSploit\n\n", BLUE)
+        printf("[1] Information Gathering\t\t[A] YouTube\n")
+        printf("[2] Vulnerability Analysis\n")
+        printf("[3] Utilities\n\n")
+        printf("[99] Exit AbdelSploit\n\n", BLUE)
         printf("$~> ")
         self.choice = str(input("")).lower()
         self.menuchoice(self.choice)
@@ -35,6 +35,24 @@ class AbdelSploit:
     def menuchoice(self, x):
         if x == "1":
             self.menu_igathering()
+        elif x == "11":
+            cls()
+            MyIP()
+            self.menu()
+        elif x == "12":
+            cls()
+            TargetIP()
+            self.menu()
+        elif x == "13":
+            cls()
+            MyDNS()
+            self.menu()
+        elif x == "14":
+            cls()
+            TargetDNS()
+            self.menu()
+        elif x == "2":
+            self.menu_vanalysis()
         elif x == "99":
             self._quit()
         else:
@@ -62,10 +80,32 @@ class AbdelSploit:
             self.menu()
         else:
             banner()
-            printf("[!] Command Not Found.\n", RED)
+            printf("[!] COMMAND NOT FOUND.\n", RED)
             sep()
             pause()
             self.menu_igathering()
+        self.menu()
+
+    def menu_vanalysis(self):
+        cls()
+        banner()
+        printf("[*] VULNERABILITY ANALYSIS:\n", BLUE)
+        printf("[1] Port Mapper\n")
+        printf("[2] XXXXX\n\n")
+        printf("[99] BACK\n\n", BLUE)
+        printf("$~> ")
+        x = str(input("")).lower()
+        cls()
+        if x == "1":
+            PortMapper()
+        elif x == "99":
+            self.menu()
+        else:
+            banner()
+            printf("[!] COMMAND NOT FOUND.\n", RED)
+            sep()
+            pause()
+            self.menu_vanalysis()
         self.menu()
 
     def _quit(self):
