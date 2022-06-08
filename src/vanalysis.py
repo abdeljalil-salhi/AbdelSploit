@@ -5,7 +5,7 @@ from src.art import *
 from src.print import *
 from src.utilities import *
 
-from socket import gethostbyname, setdefaulttimeout, gaierror, error, socket, AF_INET, SOCK_STREAM
+from socket import gethostbyname, setdefaulttimeout, inet_aton, gaierror, error, socket, AF_INET, SOCK_STREAM
 from os import path, makedirs
 from datetime import datetime
 
@@ -21,8 +21,19 @@ class PortMapper:
         printf("[1] PORT MAPPER\n", BLUE)
         printf("Interrupt: ")
         printf("[CTRL + C]\n", BLUE)
-        printf("IP\~> ")
-        self.target = input("")
+        while True:
+            printf("IP\~> ")
+            self.target = input("")
+            if self.target == "":
+                printf("ENTER VALID IP.\n", RED)
+                continue
+            else:
+                try:
+                    inet_aton(self.target)
+                    break
+                except:
+                    printf("INVALID IP.\n", RED)
+                    continue
         self.target = gethostbyname(self.target)
 
         sep()
@@ -53,7 +64,7 @@ class PortMapper:
                 continue
 
         sep()
-        printf(f"Scanning {self.target}...\n")
+        printf(f"Scanning {self.target} {self.start}:{self.end}...\n")
         printf(f"Started at {datetime.now()}\n")
         self.time = datetime.now()
 
