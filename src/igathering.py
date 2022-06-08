@@ -69,7 +69,8 @@ class MyIP:
 
         sep()
         printf("Save it?\t[Y]es / [N]o\n")
-        x = str(input("$~> ")).lower()
+        printf("$~> ")
+        x = str(input("")).lower()
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
@@ -116,7 +117,8 @@ class TargetIP:
         self.main()
 
     def main(self):
-        self.target = input("Enter Target IP: ")
+        printf("Enter Target IP: ")
+        self.target = input("")
         sep()
         self.time = datetime.now()
         try:
@@ -173,7 +175,8 @@ class TargetIP:
 
             sep()
             printf("Save it?\t[Y]es / [N]o\n")
-            x = str(input("$~> ")).lower()
+            printf("$~> ")
+            x = str(input("")).lower()
             sep()
             if x == "y" or x == "ye" or x == "yes" or x == "oui":
                 folder = "./output/igathering/"
@@ -257,7 +260,8 @@ class MyDNS:
 
         sep()
         printf("Save it?\t[Y]es / [N]o\n")
-        x = str(input("$~> ")).lower()
+        printf("$~> ")
+        x = str(input("")).lower()
         sep()
         if x == "y" or x == "ye" or x == "yes" or x == "oui":
             folder = "./output/igathering/"
@@ -285,7 +289,8 @@ class TargetDNS:
         self.main()
 
     def main(self):
-        self.target = input("Enter Target DNS: ")
+        printf("Enter Target DNS: ")
+        self.target = input("")
         sep()
         self.time = datetime.now()
         try:
@@ -316,7 +321,8 @@ class TargetDNS:
 
             sep()
             printf("Save it?\t[Y]es / [N]o\n")
-            x = str(input("$~> ")).lower()
+            printf("$~> ")
+            x = str(input("")).lower()
             sep()
             if x == "y" or x == "ye" or x == "yes" or x == "oui":
                 folder = "./output/igathering/"

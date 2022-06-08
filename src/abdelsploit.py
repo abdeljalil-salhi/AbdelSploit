@@ -28,7 +28,8 @@ class AbdelSploit:
         printf("\t[2] Vulnerability Analysis\n")
         printf("\t[3] Utilities\n\n")
         printf("\t[99] Exit AbdelSploit\n", BLUE)
-        self.choice = str(input("$~> ")).lower()
+        printf("$~> ")
+        self.choice = str(input("")).lower()
         self.menuchoice(self.choice)
 
     def menuchoice(self, x):
@@ -46,7 +47,8 @@ class AbdelSploit:
         printf("[1] My IP\t\t[2] Target IP\n")
         printf("[3] My DNS\t\t[4] Target DNS\n\n")
         printf("[99] BACK\n", BLUE)
-        x = str(input("$~> ")).lower()
+        printf("$~> ")
+        x = str(input("")).lower()
         cls()
         if x == "1":
             MyIP()
