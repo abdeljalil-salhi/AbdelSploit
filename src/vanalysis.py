@@ -13,39 +13,11 @@ from datetime import datetime
 class PortMapper:
     def __init__(self):
         self.time = None
-        self.target = None
         self.openports = []
         banner()
         self.main()
 
-    def scanner(self, port):
-        try:
-            s = socket(AF_INET, SOCK_STREAM)
-            s.settimeout(0.5)
-            s.connect((self.target, port))
-            try:
-                service = s.recv(1024).decode()
-                printf(f"[{datetime.now() - self.time}] PORT ")
-                printf(f"{port}", GREEN)
-                printf(f": OPEN ({service})\n")
-                self.openports.append(port)
-            except:
-                printf(f"[{datetime.now() - self.time}] PORT ")
-                printf(f"{port}", GREEN)
-                printf(": OPEN\n")
-                self.openports.append(port)
-        except KeyboardInterrupt:
-            printf("[!] CTRL + C pressed.\n", RED)
-        except gaierror:
-            printf("[!] Invalid Host.\n", RED)
-        except error:
-            printf("[!] Server not responding...\n", RED)
-        except:
-            pass
-
     def main(self):
-        from threading import Thread
-
         printf("[1] PORT MAPPER\n", BLUE)
         printf("Interrupt: ")
         printf("[CTRL + C]\n", BLUE)
@@ -92,14 +64,45 @@ class PortMapper:
                 continue
 
         sep()
-        printf(f"Scanning {self.target} {self.start}:{self.end}...\n")
-        printf(f"Started at {datetime.now()}\n")
         self.time = datetime.now()
+        printf(f"Scanning {self.target} {self.start}:{self.end}...\n")
+        printf(f"Started at {self.time}\n")
 
         sep()
-        for port in range(self.start, self.end):
-            thread = Thread(target=self.scanner, args=[port])
-            thread.start()
+        try:
+            for port in range(self.start, self.end):
+                cls()
+                banner()
+                printf("[1] PORT MAPPER\n", BLUE)
+                printf("Interrupt: ")
+                printf("[CTRL + C]\n", BLUE)
+                printf(f"IP\~> {self.target}\n")
+                sep()
+                printf("[+] RANGE:\n")
+                printf(f"Start PORT: {self.start}\n")
+                printf(f"End PORT: {self.end}\n")
+                sep()
+                printf(f"Scanning {self.target} {self.start}:{self.end}...\n")
+                printf(f"Started at {self.time}\n")
+                sep()
+                printf(f"[{port}/{self.end}]\n")
+                sep()
+                for i in range(len(self.openports)):
+                    printf(f"PORT {self.openports[i]}: OPEN\n")
+                s = socket(AF_INET, SOCK_STREAM)
+                setdefaulttimeout(0.2)
+                self.result = s.connect_ex((self.target, port))
+                if self.result == 0:
+                    printf(
+                        f"[{datetime.now() - self.time}] PORT {port}: OPEN\n", GREEN)
+                    self.openports.append(port)
+                s.close()
+        except KeyboardInterrupt:
+            printf("[!] CTRL + C pressed.\n", RED)
+        except gaierror:
+            printf("[!] Invalid Host.\n", RED)
+        except error:
+            printf("[!] Server not responding...\n", RED)
 
         sep()
         self.time = str(datetime.now() - self.time)

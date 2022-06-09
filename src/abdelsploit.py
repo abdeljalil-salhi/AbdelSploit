@@ -13,6 +13,7 @@ from src.utilities import *
 from src.igathering import *
 from src.vanalysis import *
 from src.utools import *
+from src.wexploit import *
 
 from sys import exit
 
@@ -25,9 +26,10 @@ class AbdelSploit:
     def menu(self):
         cls()
         banner()
-        printf("[1] Information Gathering\t\t[A] YouTube\n")
+        printf("[1] Information Gathering\n")
         printf("[2] Vulnerability Analysis\n")
-        printf("[3] Utility Tools\n\n")
+        printf("[3] Utility Tools\n")
+        printf("[4] Wireless Attacks\n\n")
         printf("[99] Exit AbdelSploit\n\n", BLUE)
         printf("$~> ")
         self.choice = str(input("")).lower()
@@ -67,6 +69,12 @@ class AbdelSploit:
         elif x == "31":
             cls()
             PasswordGenerator()
+            self.menu()
+        elif x == "4":
+            self.menu_wexploit()
+        elif x == "41":
+            cls()
+            GetPwds()
             self.menu()
         elif x == "99":
             self._quit()
@@ -155,7 +163,29 @@ class AbdelSploit:
             printf("[!] COMMAND NOT FOUND.\n", RED)
             sep()
             pause()
-            self.utools()
+            self.menu_utools()
+        self.menu()
+
+    def menu_wexploit(self):
+        cls()
+        banner()
+        printf("[*] WIRELESS EXPLOITATION:\n", BLUE)
+        printf("[1] Get Passwords\n")
+        printf("[2] XXXXX\n\n")
+        printf("[99] BACK\n\n", BLUE)
+        printf("$~> ")
+        x = str(input("")).lower()
+        cls()
+        if x == "1":
+            GetPwds()
+        elif x == "99":
+            self.menu()
+        else:
+            banner()
+            printf("[!] COMMAND NOT FOUND.\n", RED)
+            sep()
+            pause()
+            self.menu_wexploit()
         self.menu()
 
     def _quit(self):
