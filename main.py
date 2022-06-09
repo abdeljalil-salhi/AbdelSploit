@@ -8,7 +8,11 @@
 #         \/    \/      \/    \/             \/|__|        © abdeeels 2022
 
 from src.abdelsploit import AbdelSploit
-
+from src.utilities import *
+from src.print import *
 
 if __name__ == '__main__':
+    cls()
+    banner()
+    printf("Loading...\n", BLUE)
     AbdelSploit()
