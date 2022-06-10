@@ -10,11 +10,11 @@
 from src.art import *
 from src.print import *
 from src.utilities import *
-from src.igathering import *
-from src.vanalysis import *
-from src.utools import *
-from src.wexploit import *
-from src.carding import *
+from src.modules.igathering import *
+from src.modules.vanalysis import *
+from src.modules.utools import *
+from src.modules.wexploit import *
+from src.modules.carding import *
 
 from sys import exit
 
