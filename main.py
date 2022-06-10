@@ -7,12 +7,15 @@
 # \____|__  /___  /\____ |\___  >____/_______  /   __/|____/\____/|__||__|
 #         \/    \/      \/    \/             \/|__|        © abdeeels 2022
 
-from src.abdelsploit import AbdelSploit
-from src.utilities import *
-from src.print import *
 
 if __name__ == '__main__':
+    from src.utilities import *
+    from src.print import *
+
     cls()
     banner()
     printf("Loading...\n", BLUE)
+
+    from src.abdelsploit import AbdelSploit
+
     AbdelSploit()
