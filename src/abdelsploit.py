@@ -28,14 +28,17 @@ class AbdelSploit:
         try:
             cls()
             banner()
-            printf("[1] Information Gathering\n")
-            printf("[2] Vulnerability Analysis\n")
-            printf("[3] Utility Tools\n")
-            printf("[4] Wireless Attacks\n")
-            printf("[5] Carding\n\n")
+            printf("[01] Information Gathering\n")
+            printf("[02] Vulnerability Analysis\n")
+            printf("[03] Utility Tools\n")
+            printf("[04] Wireless Attacks\n")
+            printf("[05] Carding\n")
+            printf("[06] osINT\n\n")
             printf("[99] Exit AbdelSploit\n\n", BLUE)
             printf("$~> ")
             self.choice = str(input("")).lower()
+            if self.choice[0] == "0":
+                self.choice = self.choice[1]
             self.menuchoice(self.choice)
         except KeyboardInterrupt:
             self._quit("Exiting...")
