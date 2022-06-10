@@ -25,17 +25,20 @@ class AbdelSploit:
         self.menu()
 
     def menu(self):
-        cls()
-        banner()
-        printf("[1] Information Gathering\n")
-        printf("[2] Vulnerability Analysis\n")
-        printf("[3] Utility Tools\n")
-        printf("[4] Wireless Attacks\n")
-        printf("[5] Carding\n\n")
-        printf("[99] Exit AbdelSploit\n\n", BLUE)
-        printf("$~> ")
-        self.choice = str(input("")).lower()
-        self.menuchoice(self.choice)
+        try:
+            cls()
+            banner()
+            printf("[1] Information Gathering\n")
+            printf("[2] Vulnerability Analysis\n")
+            printf("[3] Utility Tools\n")
+            printf("[4] Wireless Attacks\n")
+            printf("[5] Carding\n\n")
+            printf("[99] Exit AbdelSploit\n\n", BLUE)
+            printf("$~> ")
+            self.choice = str(input("")).lower()
+            self.menuchoice(self.choice)
+        except KeyboardInterrupt:
+            self._quit("Exiting...")
 
     def menuchoice(self, x):
         if x == "1":
@@ -219,11 +222,11 @@ class AbdelSploit:
             self.menu_carding()
         self.menu()
 
-    def _quit(self):
+    def _quit(self, text="See you soon!"):
         from time import sleep
 
         cls()
         printf(ascii_art, YELLOW)
-        printf("\nSee you soon!", RED)
+        printf(f"\n{text}", RED)
         sleep(1.5)
         exit(0)
