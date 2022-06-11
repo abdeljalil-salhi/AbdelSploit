@@ -15,6 +15,7 @@ from src.modules.vanalysis import *
 from src.modules.utools import *
 from src.modules.wexploit import *
 from src.modules.carding import *
+from src.modules.osint import *
 
 from sys import exit
 
@@ -89,6 +90,12 @@ class AbdelSploit:
         elif x == "51":
             cls()
             CCGenerator()
+            self.menu()
+        elif x == "6":
+            self.menu_osint()
+        elif x == "61":
+            cls()
+            osintInstagram()
             self.menu()
         elif x == "99":
             self._quit()
@@ -223,6 +230,27 @@ class AbdelSploit:
             sep()
             pause()
             self.menu_carding()
+        self.menu()
+
+    def menu_osint(self):
+        cls()
+        banner()
+        printf("[*] osINT:\n", BLUE)
+        printf("[1] Instagram\n\n")
+        printf("[99] BACK\n\n", BLUE)
+        printf("$~> ")
+        x = str(input("")).lower()
+        cls()
+        if x == "1":
+            osintInstagram()
+        elif x == "99":
+            self.menu()
+        else:
+            banner()
+            printf("[!] COMMAND NOT FOUND.\n", RED)
+            sep()
+            pause()
+            self.menu_osint()
         self.menu()
 
     def _quit(self, text="See you soon!"):
