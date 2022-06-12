@@ -30,11 +30,11 @@ class PortMapper:
             else:
                 try:
                     inet_aton(self.target)
+                    self.target = gethostbyname(self.target)
                     break
                 except:
                     printf("INVALID IP.\n", RED)
                     continue
-        self.target = gethostbyname(self.target)
 
         sep()
         printf("[+] RANGE:\n")
@@ -82,21 +82,51 @@ class PortMapper:
                 printf(f"Start PORT: {self.start}\n")
                 printf(f"End PORT: {self.end}\n")
                 sep()
-                printf(f"Scanning {self.target} {self.start}:{self.end}...\n")
-                printf(f"Started at {self.time}\n")
+                duration = int((self.end - port) * 0.5)
+                if duration > 60:
+                    mget, sget = divmod(duration, 60)
+                    timeleft = f"{mget}m{sget}s"
+                else:
+                    timeleft = f"{duration}s"
+                printf(
+                    f"Scanning {self.target} {self.start}:{self.end}... ({timeleft})\n")
+                printf(
+                    f"Started at {self.time}\n")
                 sep()
-                printf(f"[{port}/{self.end}]\n")
+                printf(
+                    f"[{port}/{self.end}]\n")
                 sep()
                 for i in range(len(self.openports)):
                     printf(f"PORT {self.openports[i]}: OPEN\n")
-                s = socket(AF_INET, SOCK_STREAM)
-                setdefaulttimeout(0.2)
-                self.result = s.connect_ex((self.target, port))
-                if self.result == 0:
-                    printf(
-                        f"[{datetime.now() - self.time}] PORT {port}: OPEN\n", GREEN)
-                    self.openports.append(port)
-                s.close()
+                with socket(AF_INET, SOCK_STREAM) as s:
+                    s.settimeout(0.5)
+                    result = s.connect_ex((self.target, port))
+                    if result == 0:
+                        printf(
+                            f"[{datetime.now() - self.time}] PORT {port}: OPEN\n", GREEN)
+                        self.openports.append(port)
+            cls()
+            banner()
+            printf("[1] PORT MAPPER\n", BLUE)
+            printf("Interrupt: ")
+            printf("[CTRL + C]\n", BLUE)
+            printf(f"IP\~> {self.target}\n")
+            sep()
+            printf("[+] RANGE:\n")
+            printf(f"Start PORT: {self.start}\n")
+            printf(f"End PORT: {self.end}\n")
+            sep()
+            printf(
+                f"Scanned {self.target} {self.start}:{self.end}\n")
+            printf(
+                f"Started at {self.time}\n")
+            sep()
+            printf(
+                f"[{self.end}/{self.end}]\n")
+            sep()
+            if len(self.openports) == 0:
+                printf("[!] No open ports found.\n", RED)
+
         except KeyboardInterrupt:
             printf("[!] CTRL + C pressed.\n", RED)
         except gaierror:
