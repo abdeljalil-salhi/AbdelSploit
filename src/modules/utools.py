@@ -156,3 +156,129 @@ class PasswordGenerator:
                 printf("[!] Something went wrong. (permissions)\n", RED)
             sep()
         pause()
+
+
+class EXIFReader:
+    def __init__(self):
+        self.folder = "./output/utools/"
+        self.filename = "exif.txt"
+        self.filepath = path.join(self.folder, self.filename)
+        self.target = None
+
+        banner()
+        self.main()
+
+    def maps(self, gps_coords):
+        dec_deg_lat = self.deg(float(gps_coords["lat"][0]),  float(
+            gps_coords["lat"][1]), float(gps_coords["lat"][2]), gps_coords["lat_ref"])
+        dec_deg_lon = self.deg(float(gps_coords["lon"][0]),  float(
+            gps_coords["lon"][1]), float(gps_coords["lon"][2]), gps_coords["lon_ref"])
+        return f"https://maps.google.com/?q={dec_deg_lat},{dec_deg_lon}"
+
+    def deg(self, degree, minutes, seconds, direction):
+        decimal_degrees = degree + minutes / 60 + seconds / 3600
+        if direction == "S" or direction == "W":
+            decimal_degrees *= -1
+        return decimal_degrees
+
+    def reader(self, file):
+        from PIL import Image
+        from PIL.ExifTags import GPSTAGS, TAGS
+
+        try:
+            gps_coords = {}
+            image = Image.open(file)
+            printf(f"[{file}]\n", GREEN)
+            if image.getexif() == {} or image.getexif() == None:
+                printf("No EXIF data found.\n", RED)
+            else:
+                for tag, value in image.getexif().items():
+                    tag_ = TAGS.get(tag)
+                    if tag_ == "GPSInfo":
+                        for key, val in value.items():
+                            printf(
+                                f"GPS Info\t\t: {GPSTAGS.get(key)} - {val}\n")
+                            if GPSTAGS.get(key) == "GPSLatitude":
+                                gps_coords["lat"] = val
+                            elif GPSTAGS.get(key) == "GPSLongitude":
+                                gps_coords["lon"] = val
+                            elif GPSTAGS.get(key) == "GPSLatitudeRef":
+                                gps_coords["lat_ref"] = val
+                            elif GPSTAGS.get(key) == "GPSLongitudeRef":
+                                gps_coords["lon_ref"] = val
+                    else:
+                        printf(f"{tag_} - {value}\n")
+                if gps_coords:
+                    printf(self.maps(gps_coords))
+        except IOError:
+            printf(f"[!] Incorrect file format! [{file}]\n", RED)
+
+    def main(self):
+        printf("[2] EXIF READER\n", BLUE)
+        printf("[A] Link\n")
+        printf("[B] Folder\n")
+        printf("[C] File Path\n\n")
+        printf("[99] BACK\n\n", BLUE)
+        printf("$~> ")
+        x = str(input("")).lower()
+
+        cls()
+        banner()
+        if x == "a":
+            from requests import head
+
+            while True:
+                printf("URL\~> ")
+                url = input("")
+                formats = ("image/png", "image/jpeg", "image/jpg")
+                try:
+                    r = head(url)
+                    if r.headers["content-type"] in formats:
+                        break
+                    printf("INVALID FORMAT. (<png/jpeg/jpg> only)\n", RED)
+                    continue
+                except:
+                    printf("INVALID URL.\n")
+                    continue
+        elif x == "b":
+            from os import listdir
+
+            while True:
+                printf("PATH\~> ")
+                path_ = input("")
+                if path_ == "":
+                    path_ = "./images/"
+                    if not path.isdir(path_):
+                        makedirs(path_)
+                try:
+                    if path.isdir(path_):
+                        break
+                    else:
+                        printf("INVALID FOLDER PATH.\n", RED)
+                        continue
+                except:
+                    printf("INVALID FOLDER PATH.\n", RED)
+                    continue
+            files = listdir(path_)
+            if len(files) == 0:
+                printf("[!] No files found.\n", RED)
+                sep()
+            else:
+                sep()
+                for file in files:
+                    self.reader(f"{path.join(path_, file)}")
+                    sep()
+            pause()
+        elif x == "c":
+            while True:
+                printf("FILEPATH\~> ")
+                filepath = input("")
+                try:
+                    if path.isfile(filepath):
+                        break
+                    else:
+                        printf("INVALID FILE PATH.\n", RED)
+                        continue
+                except:
+                    printf("INVALID FILE PATH.\n", RED)
+                    continue
