@@ -19,7 +19,10 @@ def cls():
 
 # print a separator
 def sep():
-    (w, _) = get_terminal_size()
+    try:
+        (w, _) = get_terminal_size()
+    except:
+        w = 25
     printf("-" * w + "\n", GREEN)
 
 
