@@ -79,6 +79,10 @@ class AbdelSploit:
             cls()
             PasswordGenerator()
             self.menu()
+        elif x == "32":
+            cls()
+            EXIFReader()
+            self.menu()
         elif x == "4":
             self.menu_wexploit()
         elif x == "41":
@@ -160,7 +164,7 @@ class AbdelSploit:
         banner()
         printf("[*] UTILITY TOOLS:\n", BLUE)
         printf("[1] Password Generator\n")
-        printf("[2] XXXXX\n\n")
+        printf("[2] EXIF Reader\n\n")
         printf("[99] BACK\n\n", BLUE)
         printf("$~> ")
         x = str(input("")).lower()
@@ -177,6 +181,8 @@ class AbdelSploit:
             PasswordGenerator().show()
         elif x == "1z":
             PasswordGenerator().delete()
+        elif x == "2":
+            EXIFReader()
         elif x == "99":
             self.menu()
         else:
