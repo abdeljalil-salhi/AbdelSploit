@@ -209,18 +209,19 @@ class EXIFReader:
             image = Image.open(file)
             printf(f"[{file}]\n", GREEN)
             self.saved.append(f"[{file}]\n")
-            if image.getexif() == {} or image.getexif() == None:
+            if image._getexif() == {} or image._getexif() == None:
                 printf("No EXIF data found.\n", RED)
                 self.saved.append("No EXIF data found.\n")
             else:
-                for tag, value in image.getexif().items():
+                for tag, value in image._getexif().items():
                     tag_ = TAGS.get(tag)
                     if tag_ == "GPSInfo":
                         for key, val in value.items():
-                            printf(
-                                f"GPS Info\t\t: {GPSTAGS.get(key)} - {val}\n")
-                            self.saved.append(
-                                f"GPS Info\t\t: {GPSTAGS.get(key)} - {val}\n")
+                            if not "Ref" in GPSTAGS.get(key):
+                                printf(
+                                    f"{GPSTAGS.get(key)} - {val}\n")
+                                self.saved.append(
+                                    f"{GPSTAGS.get(key)} - {val}\n")
                             if GPSTAGS.get(key) == "GPSLatitude":
                                 gps_coords["lat"] = val
                             elif GPSTAGS.get(key) == "GPSLongitude":
@@ -230,15 +231,18 @@ class EXIFReader:
                             elif GPSTAGS.get(key) == "GPSLongitudeRef":
                                 gps_coords["lon_ref"] = val
                     else:
-                        printf(f"{tag_} - {value}\n")
-                        self.saved.append(f"{tag_} - {value}\n")
+                        if tag_ != "MakerNote":
+                            printf(f"{tag_} - {value}\n")
+                            self.saved.append(f"{tag_} - {value}\n")
                 if gps_coords:
-                    __ = self.maps(gps_coords)
+                    __ = f"{self.maps(gps_coords)}\n"
                     printf(__)
                     self.saved.append(__)
         except IOError:
-            printf(f"[!] Incorrect file format! [{file}]\n", RED)
-            self.saved.append(f"[!] Incorrect file format! [{file}]\n")
+            printf(f"[{file}]\n", GREEN)
+            printf("Incorrect file format.\n", RED)
+            self.saved.append(f"[{file}]\n")
+            self.saved.append("Incorrect file format.\n")
 
     def main(self):
         printf("[2] EXIF READER\n", BLUE)
