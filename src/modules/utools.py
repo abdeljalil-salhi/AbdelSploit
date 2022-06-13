@@ -164,6 +164,7 @@ class EXIFReader:
         self.filename = "exif.txt"
         self.filepath = path.join(self.folder, self.filename)
         self.target = None
+        self.saved = []
 
         banner()
         self.main()
@@ -181,6 +182,24 @@ class EXIFReader:
             decimal_degrees *= -1
         return decimal_degrees
 
+    def saver(self):
+        printf("Save it?\t[Y]es / [N]o\n")
+        printf("$~> ")
+        x = str(input("")).lower()
+
+        sep()
+        if x == "y" or x == "ye" or x == "yes" or x == "oui":
+            from datetime import datetime
+
+            f = open(self.filepath, "a+")
+            f.write(f"--- {datetime.now()}\n")
+            for line in self.saved:
+                f.write(line)
+            f.write("\n")
+            f.close()
+            printf(f"[+] Saved to: {self.filepath}\n", BLUE)
+            sep()
+
     def reader(self, file):
         from PIL import Image
         from PIL.ExifTags import GPSTAGS, TAGS
@@ -189,14 +208,18 @@ class EXIFReader:
             gps_coords = {}
             image = Image.open(file)
             printf(f"[{file}]\n", GREEN)
+            self.saved.append(f"[{file}]\n")
             if image.getexif() == {} or image.getexif() == None:
                 printf("No EXIF data found.\n", RED)
+                self.saved.append("No EXIF data found.\n")
             else:
                 for tag, value in image.getexif().items():
                     tag_ = TAGS.get(tag)
                     if tag_ == "GPSInfo":
                         for key, val in value.items():
                             printf(
+                                f"GPS Info\t\t: {GPSTAGS.get(key)} - {val}\n")
+                            self.saved.append(
                                 f"GPS Info\t\t: {GPSTAGS.get(key)} - {val}\n")
                             if GPSTAGS.get(key) == "GPSLatitude":
                                 gps_coords["lat"] = val
@@ -208,10 +231,14 @@ class EXIFReader:
                                 gps_coords["lon_ref"] = val
                     else:
                         printf(f"{tag_} - {value}\n")
+                        self.saved.append(f"{tag_} - {value}\n")
                 if gps_coords:
-                    printf(self.maps(gps_coords))
+                    __ = self.maps(gps_coords)
+                    printf(__)
+                    self.saved.append(__)
         except IOError:
             printf(f"[!] Incorrect file format! [{file}]\n", RED)
+            self.saved.append(f"[!] Incorrect file format! [{file}]\n")
 
     def main(self):
         printf("[2] EXIF READER\n", BLUE)
@@ -226,6 +253,8 @@ class EXIFReader:
         banner()
         if x == "a":
             from requests import head
+            from urllib.request import urlretrieve
+            from numpy.random import randint
 
             while True:
                 printf("URL\~> ")
@@ -240,6 +269,18 @@ class EXIFReader:
                 except:
                     printf("INVALID URL.\n")
                     continue
+
+            sep()
+            path_ = "./images/"
+            if not path.isdir(path_):
+                makedirs(path_)
+            file_ = path.join(path_, f"{randint(0, 100000)}.png")
+            urlretrieve(url, file_)
+            self.reader(file_)
+
+            sep()
+            self.saver()
+            pause()
         elif x == "b":
             from os import listdir
 
@@ -268,6 +309,7 @@ class EXIFReader:
                 for file in files:
                     self.reader(f"{path.join(path_, file)}")
                     sep()
+                self.saver()
             pause()
         elif x == "c":
             while True:
@@ -282,3 +324,16 @@ class EXIFReader:
                 except:
                     printf("INVALID FILE PATH.\n", RED)
                     continue
+
+            sep()
+            self.reader(filepath)
+
+            sep()
+            self.saver()
+            pause()
+        elif not x == "99":
+            printf("[!] INVALID OPTION.\n", RED)
+            sep()
+            pause()
+            cls()
+            self.__init__()
