@@ -311,8 +311,9 @@ class EXIFReader:
             else:
                 sep()
                 for file in files:
-                    self.reader(f"{path.join(path_, file)}")
-                    sep()
+                    if not file == "put exif images here" and not file == "exifrem":
+                        self.reader(f"{path.join(path_, file)}")
+                        sep()
                 self.saver()
             pause()
         elif x == "c":
@@ -341,3 +342,49 @@ class EXIFReader:
             pause()
             cls()
             self.__init__()
+
+
+class EXIFRemover:
+    def __init__(self):
+        banner()
+        self.main()
+
+    def main(self):
+        from os import listdir, getcwd, chdir
+        from PIL import Image
+
+        path_ = "./images/exifrem/"
+
+        printf("[3] EXIF REMOVER\n", BLUE)
+        printf("PUT FILES TO REMOVE EXIF IN:\n", GREEN)
+        printf(f"{path_}\n")
+        sep()
+        pause()
+
+        sep()
+        if not path.isdir(path_):
+            makedirs(path_)
+        files = listdir(path_)
+        if len(files) == 0 or (len(files) == 1 and files[0] == "put exif remove images here"):
+            printf("[!] No files found.\n", RED)
+            sep()
+        else:
+            cwd = getcwd()
+            chdir(path_)
+            for file in files:
+                if not file == "put exif remove images here":
+                    try:
+                        image = Image.open(file)
+                        image_data = list(image.getdata())
+                        image_no_exif = Image.new(image.mode, image.size)
+                        image_no_exif.putdata(image_data)
+                        image_no_exif.save(file)
+                        printf(f"[{file}]\n", GREEN)
+                        printf("EXIF Removed.\n")
+                        sep()
+                    except IOError:
+                        printf(f"[{file}]\n", GREEN)
+                        printf("Incorrect file format.\n", RED)
+                        sep()
+            chdir(cwd)
+        pause()
