@@ -38,8 +38,11 @@ class AbdelSploit:
             printf("[99] Exit AbdelSploit\n\n", BLUE)
             printf("$~> ")
             self.choice = str(input("")).lower()
-            if self.choice[0] == "0":
-                self.choice = self.choice[1]
+            if not self.choice == "" and not self.choice == "0":
+                if self.choice[0] == "0":
+                    self.choice = self.choice[1]
+            else:
+                self.menu()
             self.menuchoice(self.choice)
         except KeyboardInterrupt:
             self._quit("Exiting...")
@@ -82,6 +85,10 @@ class AbdelSploit:
         elif x == "32":
             cls()
             EXIFReader()
+            self.menu()
+        elif x == "33":
+            cls()
+            EXIFRemover()
             self.menu()
         elif x == "4":
             self.menu_wexploit()
@@ -164,7 +171,8 @@ class AbdelSploit:
         banner()
         printf("[*] UTILITY TOOLS:\n", BLUE)
         printf("[1] Password Generator\n")
-        printf("[2] EXIF Reader\n\n")
+        printf("[2] EXIF Reader\n")
+        printf("[3] EXIF Remover\n\n")
         printf("[99] BACK\n\n", BLUE)
         printf("$~> ")
         x = str(input("")).lower()
@@ -183,6 +191,8 @@ class AbdelSploit:
             PasswordGenerator().delete()
         elif x == "2":
             EXIFReader()
+        elif x == "3":
+            EXIFRemover()
         elif x == "99":
             self.menu()
         else:
