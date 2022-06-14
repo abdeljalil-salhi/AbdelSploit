@@ -5,4 +5,7 @@ desktop.ini
 /images/*.jpg
 /images/*.png
 /images/*.jpeg
+/images/exifrem/*.jpg
+/images/exifrem/*.png
+/images/exifrem/*.jpeg
 newrelic_agent.log
