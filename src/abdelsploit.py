@@ -29,7 +29,7 @@ class AbdelSploit:
         try:
             cls()
             banner()
-            printf("[01] Information Gathering\n")
+            printf("[01] Information Gathering\t\t[Z] Console Mode\n")
             printf("[02] Vulnerability Analysis\n")
             printf("[03] Utility Tools\n")
             printf("[04] Wireless Attacks\n")
