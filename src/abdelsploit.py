@@ -108,6 +108,8 @@ class AbdelSploit:
             cls()
             osintInstagram()
             self.menu()
+        elif x == "z":
+            cls()
         elif x == "99":
             self._quit()
         else:
