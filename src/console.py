@@ -11,10 +11,16 @@ from src.print import *
 from src.utilities import banner, cls
 from src.abdelsploit import AbdelSploit
 
+windows = False
+try:
+    from gnureadline import parse_and_bind, set_completer
+except:
+    windows = True
+    from pyreadline import Readline
+
 
 class Console:
     def __init__(self):
-        self.windows = False
         self.commands = {
             "menu": AbdelSploit.__init__,
             "list": self.cmdlist,
@@ -27,15 +33,10 @@ class Console:
             "dns": self.__init__
         }
 
-        try:
-            import gnureadline
-        except:
-            self.windows = True
-            import pyreadline
-
         cls()
         banner()
         printf("Type 'list' to show all available commands.\n")
+        self.main()
 
     def autocomplete(self, text, state):
         options = [i for i in self.commands if i.startswith(text)]
@@ -55,3 +56,11 @@ class Console:
         for key in keys:
             printf(f"{key}\t\t", BLUE)
             printf(f"{cmdlist[key]}\n")
+
+    def main(self):
+        if windows:
+            Readline().parse_and_bind("tab: complete")
+            Readline().set_completer(self.autocomplete)
+        else:
+            parse_and_bind("tab: complete")
+            set_completer(self.autocomplete)
