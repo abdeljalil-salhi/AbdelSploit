@@ -10,6 +10,7 @@
 from src.art import *
 from src.print import *
 from src.utilities import *
+from src.console import *
 from src.modules.igathering import *
 from src.modules.vanalysis import *
 from src.modules.utools import *
@@ -110,6 +111,7 @@ class AbdelSploit:
             self.menu()
         elif x == "z":
             cls()
+            Console()
         elif x == "99":
             self._quit()
         else:
