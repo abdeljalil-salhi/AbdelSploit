@@ -11,6 +11,8 @@ from src.print import *
 from src.utilities import banner, cls
 from src.abdelsploit import AbdelSploit
 
+from argparse import ArgumentParser
+
 windows = False
 try:
     from gnureadline import parse_and_bind, set_completer
@@ -64,3 +66,39 @@ class Console:
         else:
             parse_and_bind("tab: complete")
             set_completer(self.autocomplete)
+
+        parser = ArgumentParser(
+            description="AbdelSploit is your new favorite hacking tool.")
+        parser.add_argument("target", type=str, help="target")
+        parser.add_argument(
+            "-j", "--json", help="save commands output as JSON file", action="store_true")
+        parser.add_argument(
+            "-c", "--command", help="run in single command mode & execute provided command", action="store")
+
+        args = parser.parse_args()
+
+        while True:
+            if args.command:
+                cmd = args.command
+                _cmd = self.commands.get(args.command)
+            else:
+                if windows:
+                    Readline().parse_and_bind("tab: complete")
+                    Readline().set_completer(self.autocomplete)
+                else:
+                    parse_and_bind("tab: complete")
+                    set_completer(self.autocomplete)
+
+                printf("$~> ")
+                cmd = input("")
+                _cmd = self.commands.get(cmd)
+
+            if _cmd:
+                _cmd()
+            elif cmd == "":
+                printf("")
+            else:
+                printf("Unknown command. type 'list' to get help.\n", RED)
+
+            if args.command:
+                break
