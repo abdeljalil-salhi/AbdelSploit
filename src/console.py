@@ -9,7 +9,7 @@
 
 from src.print import *
 from src.utilities import banner, cls
-from src.abdelsploit import AbdelSploit
+from src.abdelsploit import __init__, _quit
 
 from argparse import ArgumentParser
 
@@ -24,11 +24,11 @@ except:
 class Console:
     def __init__(self):
         self.commands = {
-            "menu": AbdelSploit.__init__,
+            "menu": __init__,
             "list": self.cmdlist,
             "help": self.cmdlist,
-            "quit": AbdelSploit._quit,
-            "exit": AbdelSploit._quit,
+            "quit": _quit,
+            "exit": _quit,
             "myip": self.__init__,
             "ip": self.__init__,
             "mydns": self.__init__,
