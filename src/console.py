@@ -27,8 +27,8 @@ class Console:
             "menu": __init__,
             "list": self.cmdlist,
             "help": self.cmdlist,
-            "quit": _quit,
-            "exit": _quit,
+            "quit": self.quit,
+            "exit": self.quit,
             "myip": self.__init__,
             "ip": self.__init__,
             "mydns": self.__init__,
@@ -102,3 +102,7 @@ class Console:
 
             if args.command:
                 break
+
+    def _quit(self, text="See you soon!"):
+        printf(f"\n{text}")
+        exit(0)
