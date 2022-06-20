@@ -9,27 +9,19 @@
 
 from src.print import *
 from src.utilities import banner, cls
-from src.abdelsploit import __init__, _quit
-
-from argparse import ArgumentParser
-
-windows = False
-try:
-    from gnureadline import parse_and_bind, set_completer
-except:
-    windows = True
-    from pyreadline import Readline
+from src.abdelsploit import __init__
+from src.modules.igathering import *
 
 
 class Console:
     def __init__(self):
         self.commands = {
-            "menu": __init__,
+            "menu": self.menu,
             "list": self.cmdlist,
             "help": self.cmdlist,
-            "quit": self.quit,
-            "exit": self.quit,
-            "myip": self.__init__,
+            "quit": self._quit,
+            "exit": self._quit,
+            "myip": MyIP(),
             "ip": self.__init__,
             "mydns": self.__init__,
             "dns": self.__init__
@@ -37,7 +29,7 @@ class Console:
 
         cls()
         banner()
-        printf("Type 'list' to show all available commands.\n")
+        printf("Type 'list' to show all available commands.\n\n")
         self.main()
 
     def autocomplete(self, text, state):
@@ -49,10 +41,10 @@ class Console:
 
     def cmdlist(self):
         cmdlist = {
-            "myip": "Get your IP address infos\n",
-            "ip": "Get target IP address infos\n",
-            "mydns": "Get your DNS infos\n",
-            "dns": "Get target DNS infos\n",
+            "myip":     "Get your IP address infos\n",
+            "ip":       "Get target IP address infos\n",
+            "mydns":    "Get your DNS infos\n",
+            "dns":      "Get target DNS infos\n",
         }
         keys = cmdlist.keys()
         for key in keys:
@@ -60,48 +52,17 @@ class Console:
             printf(f"{cmdlist[key]}\n")
 
     def main(self):
-        if windows:
-            Readline().parse_and_bind("tab: complete")
-            Readline().set_completer(self.autocomplete)
-        else:
-            parse_and_bind("tab: complete")
-            set_completer(self.autocomplete)
-
-        parser = ArgumentParser(
-            description="AbdelSploit is your new favorite hacking tool.")
-        parser.add_argument("target", type=str, help="target")
-        parser.add_argument(
-            "-j", "--json", help="save commands output as JSON file", action="store_true")
-        parser.add_argument(
-            "-c", "--command", help="run in single command mode & execute provided command", action="store")
-
-        args = parser.parse_args()
-
         while True:
-            if args.command:
-                cmd = args.command
-                _cmd = self.commands.get(args.command)
-            else:
-                if windows:
-                    Readline().parse_and_bind("tab: complete")
-                    Readline().set_completer(self.autocomplete)
-                else:
-                    parse_and_bind("tab: complete")
-                    set_completer(self.autocomplete)
-
-                printf("$~> ")
-                cmd = input("")
-                _cmd = self.commands.get(cmd)
-
+            printf("$~> ")
+            x = str(input("")).lower().split(" ")
+            _cmd = self.commands.get(x[0])
             if _cmd:
                 _cmd()
-            elif cmd == "":
-                printf("")
             else:
-                printf("Unknown command. type 'list' to get help.\n", RED)
+                printf("Unknown command\n")
 
-            if args.command:
-                break
+    def menu(self):
+        pass
 
     def _quit(self, text="See you soon!"):
         printf(f"\n{text}")
