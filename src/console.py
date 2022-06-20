@@ -21,15 +21,17 @@ class Console:
             "help": self.cmdlist,
             "quit": self._quit,
             "exit": self._quit,
-            "myip": MyIP(),
-            "ip": self.__init__,
-            "mydns": self.__init__,
-            "dns": self.__init__
+            "clear": self.clear,
+            "cls": self.clear,
+            "myip": MyIP,
+            "ip": TargetIP,
+            "mydns": MyDNS,
+            "dns": TargetDNS
         }
+        self.standalone = ["menu", "list", "help",
+                           "quit", "exit", "clear", "cls"]
 
-        cls()
-        banner()
-        printf("Type 'list' to show all available commands.\n\n")
+        self.clear()
         self.main()
 
     def autocomplete(self, text, state):
@@ -54,15 +56,23 @@ class Console:
     def main(self):
         while True:
             printf("$~> ")
-            x = str(input("")).lower()
-            _cmd = self.commands.get(x.split(" ")[0])
+            x = str(input("")).lower().split(" ")
+            _cmd = self.commands.get(x[0])
             if _cmd:
-                _cmd()
+                if x[0] in self.standalone:
+                    _cmd()
+                elif x[0] == "myip":
+                    _cmd()
             else:
                 printf("Unknown command\n")
 
     def menu(self):
         pass
+
+    def clear(self):
+        cls()
+        banner()
+        printf("Type 'list' to show all available commands.\n\n")
 
     def _quit(self, text="See you soon!"):
         printf(f"\n{text}")
