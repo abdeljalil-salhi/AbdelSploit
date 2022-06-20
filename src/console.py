@@ -41,10 +41,10 @@ class Console:
 
     def cmdlist(self):
         cmdlist = {
-            "myip":     "Get your IP address infos\n",
-            "ip":       "Get target IP address infos\n",
-            "mydns":    "Get your DNS infos\n",
-            "dns":      "Get target DNS infos\n",
+            "myip":     "Get your IP address infos",
+            "ip":       "Get target IP address infos",
+            "mydns":    "Get your DNS infos",
+            "dns":      "Get target DNS infos",
         }
         keys = cmdlist.keys()
         for key in keys:
@@ -54,8 +54,8 @@ class Console:
     def main(self):
         while True:
             printf("$~> ")
-            x = str(input("")).lower().split(" ")
-            _cmd = self.commands.get(x[0])
+            x = str(input("")).lower()
+            _cmd = self.commands.get(x.split(" ")[0])
             if _cmd:
                 _cmd()
             else:
