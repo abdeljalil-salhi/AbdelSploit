@@ -63,6 +63,11 @@ class Console:
                     _cmd()
                 elif x[0] == "myip":
                     _cmd()
+                elif x[0] == "ip":
+                    try:
+                        TargetIP()
+                    except:
+                        printf("IP NOT FOUND\n")
             else:
                 printf("Unknown command\n")
 
